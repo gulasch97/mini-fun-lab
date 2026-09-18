@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mini Fun Lab</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="background"></div>
+
+    <div class="container">
+
+        <!-- =========================
+             HAUPTÜBERSICHT
+             ========================= -->
+
+        <div id="home">
+
+            <h1>🎉 Mini Fun Lab 🎉</h1>
+
+            <p class="description">
+                Follow gulasch97 on TikTok🙏✌️
+            </p>
+
+            <div class="games">
+
+                <div class="game-card">
+                    <div class="game-icon">🎲</div>
+
+                    <h2>Zufallszahl</h2>
+
+                    <p>
+                        Lass den Computer eine zufällige Zahl auswählen.
+                    </p>
+
+                    <button id="randomGameButton">
+                        Spielen
+                    </button>
+                </div>
+
+
+                <div class="game-card">
+                    <div class="game-icon">🎨</div>
+
+                    <h2>Farben</h2>
+
+                    <p>
+                        Entdecke zufällige Farben.
+                    </p>
+
+                    <button id="colorGameButton">
+                        Spielen
+                    </button>
+                </div>
+
+
+                <div class="game-card">
+                    <div class="game-icon">🖱️</div>
+
+                    <h2>Klick-Spiel</h2>
+
+                    <p>
+                        Wie schnell kannst du reagieren?
+                    </p>
+
+                    <button id="reactionGameButton">
+                        Spielen
+                    </button>
+                </div>
+
+
+                <div class="game-card">
+                    <div class="game-icon">🧠</div>
+
+                    <h2>Quiz</h2>
+
+                    <p>
+                        Teste dein Wissen.
+                    </p>
+
+                    <button id="quizGameButton">
+                        Spielen
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             ZUFALLSZAHL
+             ========================= -->
+
+        <div id="randomGame" class="game-screen">
+
+            <div class="game-header">
+
+                <button id="backButton" class="back-button">
+                    ← Zurück
+                </button>
+
+            </div>
+
+            <div class="random-game">
+
+                <div class="big-icon">
+                    🎲
+                </div>
+
+                <h1>Zufallszahl</h1>
+
+                <p class="game-description">
+                    Welche Zahl wird es diesmal?
+                </p>
+
+                <div id="number">
+                    ?
+                </div>
+
+                <button id="newNumberButton" class="main-button">
+                    🎲 Neue Zahl
+                </button>
+
+                <div class="stats">
+
+                    <div class="stat">
+
+                        <span class="stat-number" id="plays">
+                            0
+                        </span>
+
+                        <span class="stat-label">
+                            Gespielt
+                        </span>
+
+                    </div>
+
+                    <div class="stat">
+
+                        <span class="stat-number" id="highest">
+                            0
+                        </span>
+
+                        <span class="stat-label">
+                            Höchste Zahl
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             FARBEN
+             ========================= -->
+
+        <div id="colorGame" class="game-screen">
+
+            <div class="game-header">
+
+                <button id="colorBackButton" class="back-button">
+                    ← Zurück
+                </button>
+
+            </div>
+
+            <div class="color-game">
+
+                <div class="big-icon">
+                    🎨
+                </div>
+
+                <h1>Farben</h1>
+
+                <p class="game-description">
+                    Welche Farbe bekommst du?
+                </p>
+
+                <div id="colorPreview">
+                </div>
+
+                <div id="colorCode">
+                    #FFFFFF
+                </div>
+
+                <button id="newColorButton" class="main-button">
+                    🎨 Neue Farbe
+                </button>
+
+                <div class="color-stat">
+
+                    <span id="colorCount">
+                        0
+                    </span>
+
+                    Farben entdeckt
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             REAKTIONS-SPIEL
+             ========================= -->
+
+        <div id="reactionGame" class="game-screen">
+
+            <div class="game-header">
+
+                <button id="reactionBackButton" class="back-button">
+                    ← Zurück
+                </button>
+
+            </div>
+
+            <div class="reaction-game">
+
+                <div class="big-icon">
+                    🖱️
+                </div>
+
+                <h1>Reaktionstest</h1>
+
+                <p id="reactionText" class="game-description">
+                    Wie schnell kannst du reagieren?
+                </p>
+
+                <button id="reactionArea" class="reaction-area">
+                    Start
+                </button>
+
+                <div class="reaction-result">
+
+                    <div class="reaction-stat">
+
+                        <span class="reaction-number" id="reactionTime">
+                            -
+                        </span>
+
+                        <span>
+                            Zeit
+                        </span>
+
+                    </div>
+
+                    <div class="reaction-stat">
+
+                        <span class="reaction-number" id="bestTime">
+                            -
+                        </span>
+
+                        <span>
+                            Beste Zeit
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             QUIZ
+             ========================= -->
+
+        <div id="quizGame" class="game-screen">
+
+            <div class="game-header">
+
+                <button id="quizBackButton" class="back-button">
+                    ← Zurück
+                </button>
+
+            </div>
+
+
+            <div class="quiz-game">
+
+                <div class="big-icon">
+                    🧠
+                </div>
+
+                <h1>Quiz</h1>
+
+                <p id="questionNumber" class="question-number">
+                    Frage 1 von 5
+                </p>
+
+                <h2 id="question">
+                    Frage wird geladen...
+                </h2>
+
+
+                <!-- ANTWORTEN -->
+
+                <div id="answers" class="answers">
+                </div>
+
+
+                <!-- PUNKTE -->
+
+                <div class="quiz-score">
+
+                    Punkte:
+                    <strong id="score">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <!-- NÄCHSTE FRAGE -->
+
+                <button
+                    id="nextQuestionButton"
+                    class="main-button next-button"
+                    disabled
+                >
+                    Nächste Frage →
+                </button>
+
+
+                <!-- ERGEBNIS -->
+
+                <div id="quizResult" class="quiz-result">
+
+                    <div class="big-icon">
+                        🏆
+                    </div>
+
+                    <h2>Quiz beendet!</h2>
+
+                    <p>
+                        Deine Punktzahl:
+                    </p>
+
+                    <div id="finalScore">
+                        0 / 5
+                    </div>
+
+                    <button
+                        id="restartQuizButton"
+                        class="main-button"
+                    >
+                        🔄 Nochmal spielen
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
