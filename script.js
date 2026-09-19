@@ -1495,3 +1495,932 @@ restartQuizButton.addEventListener(
 
     }
 );
+
+// =========================
+// TETRIS
+// =========================
+
+const tetrisGame =
+    document.getElementById("tetrisGame");
+
+const tetrisGameButton =
+    document.getElementById("tetrisGameButton");
+
+const tetrisBackButton =
+    document.getElementById("tetrisBackButton");
+
+const tetrisBoard =
+    document.getElementById("tetris-board");
+
+const tetrisScoreElement =
+    document.getElementById("tetris-score");
+
+const tetrisLevelElement =
+    document.getElementById("tetris-level");
+
+const tetrisRestartButton =
+    document.getElementById("tetris-restart");
+
+const tetrisLeftButton =
+    document.getElementById("tetris-left");
+
+const tetrisRightButton =
+    document.getElementById("tetris-right");
+
+const tetrisRotateButton =
+    document.getElementById("tetris-rotate");
+
+const tetrisDownButton =
+    document.getElementById("tetris-down");
+
+
+// =========================
+// TETRIS EINSTELLUNGEN
+// =========================
+
+const TETRIS_WIDTH = 10;
+const TETRIS_HEIGHT = 20;
+
+let tetrisBoardData = [];
+
+let tetrisCurrentPiece = null;
+
+let tetrisCurrentX = 0;
+let tetrisCurrentY = 0;
+
+let tetrisScore = 0;
+let tetrisLevel = 1;
+
+let tetrisGameOver = false;
+
+let tetrisTimer = null;
+
+
+// =========================
+// TETRIS BLÖCKE
+// =========================
+
+const tetrisPieces = [
+
+    {
+        color: "#00f0f0",
+        shape: [
+            [1, 1, 1, 1]
+        ]
+    },
+
+    {
+        color: "#f0f000",
+        shape: [
+            [1, 1],
+            [1, 1]
+        ]
+    },
+
+    {
+        color: "#a000f0",
+        shape: [
+            [0, 1, 0],
+            [1, 1, 1]
+        ]
+    },
+
+    {
+        color: "#00f000",
+        shape: [
+            [0, 1, 1],
+            [1, 1, 0]
+        ]
+    },
+
+    {
+        color: "#f00000",
+        shape: [
+            [1, 1, 0],
+            [0, 1, 1]
+        ]
+    },
+
+    {
+        color: "#0000f0",
+        shape: [
+            [1, 0, 0],
+            [1, 1, 1]
+        ]
+    },
+
+    {
+        color: "#f0a000",
+        shape: [
+            [0, 0, 1],
+            [1, 1, 1]
+        ]
+    }
+
+];
+
+
+// =========================
+// TETRIS SPIEL ÖFFNEN
+// =========================
+
+tetrisGameButton.addEventListener(
+    "click",
+    function() {
+
+        home.style.display = "none";
+
+        tetrisGame.style.display = "block";
+
+        startTetris();
+
+    }
+);
+
+
+// =========================
+// TETRIS ZURÜCK
+// =========================
+
+tetrisBackButton.addEventListener(
+    "click",
+    function() {
+
+        stopTetris();
+
+        tetrisGame.style.display = "none";
+
+        home.style.display = "block";
+
+    }
+);
+
+
+// =========================
+// TETRIS STARTEN
+// =========================
+
+function startTetris() {
+
+    stopTetris();
+
+    tetrisScore = 0;
+
+    tetrisLevel = 1;
+
+    tetrisGameOver = false;
+
+    tetrisScoreElement.textContent =
+        tetrisScore;
+
+    tetrisLevelElement.textContent =
+        tetrisLevel;
+
+
+    tetrisBoardData = [];
+
+    for (
+        let y = 0;
+        y < TETRIS_HEIGHT;
+        y++
+    ) {
+
+        tetrisBoardData[y] = [];
+
+        for (
+            let x = 0;
+            x < TETRIS_WIDTH;
+            x++
+        ) {
+
+            tetrisBoardData[y][x] = null;
+
+        }
+
+    }
+
+
+    createTetrisPiece();
+
+    drawTetrisBoard();
+
+    startTetrisTimer();
+
+}
+
+
+// =========================
+// NEUEN BLOCK ERSTELLEN
+// =========================
+
+function createTetrisPiece() {
+
+    const randomIndex =
+        Math.floor(
+            Math.random() *
+            tetrisPieces.length
+        );
+
+    const original =
+        tetrisPieces[randomIndex];
+
+
+    tetrisCurrentPiece = {
+
+        color: original.color,
+
+        shape: original.shape.map(
+            row => [...row]
+        )
+
+    };
+
+
+    tetrisCurrentX =
+        Math.floor(
+            (TETRIS_WIDTH -
+                tetrisCurrentPiece.shape[0].length)
+            / 2
+        );
+
+    tetrisCurrentY = 0;
+
+
+    if (
+        checkTetrisCollision(
+            tetrisCurrentX,
+            tetrisCurrentY,
+            tetrisCurrentPiece.shape
+        )
+    ) {
+
+        tetrisGameOver = true;
+
+        stopTetris();
+
+        drawTetrisBoard();
+
+        setTimeout(
+            function() {
+
+                alert(
+                    "Game Over! 🎮\nScore: " +
+                    tetrisScore
+                );
+
+            },
+            100
+        );
+
+    }
+
+}
+
+
+// =========================
+// SPIELFELD ZEICHNEN
+// =========================
+
+function drawTetrisBoard() {
+
+    tetrisBoard.innerHTML = "";
+
+
+    for (
+        let y = 0;
+        y < TETRIS_HEIGHT;
+        y++
+    ) {
+
+        for (
+            let x = 0;
+            x < TETRIS_WIDTH;
+            x++
+        ) {
+
+            const cell =
+                document.createElement("div");
+
+            cell.className =
+                "tetris-cell";
+
+
+            if (
+                tetrisBoardData[y][x]
+            ) {
+
+                cell.style.background =
+                    tetrisBoardData[y][x];
+
+                cell.style.boxShadow =
+                    "inset 0 0 8px rgba(255,255,255,0.5)";
+
+            }
+
+
+            if (
+                tetrisCurrentPiece &&
+                isPartOfCurrentPiece(x, y)
+            ) {
+
+                cell.style.background =
+                    tetrisCurrentPiece.color;
+
+                cell.style.boxShadow =
+                    "inset 0 0 8px rgba(255,255,255,0.5)";
+
+            }
+
+
+            tetrisBoard.appendChild(cell);
+
+        }
+
+    }
+
+}
+
+
+// =========================
+// BLOCK ERKENNEN
+// =========================
+
+function isPartOfCurrentPiece(
+    x,
+    y
+) {
+
+    if (!tetrisCurrentPiece) {
+        return false;
+    }
+
+
+    const pieceX =
+        x - tetrisCurrentX;
+
+    const pieceY =
+        y - tetrisCurrentY;
+
+
+    if (
+        pieceY < 0 ||
+        pieceY >=
+        tetrisCurrentPiece.shape.length
+    ) {
+
+        return false;
+
+    }
+
+
+    if (
+        pieceX < 0 ||
+        pieceX >=
+        tetrisCurrentPiece.shape[0].length
+    ) {
+
+        return false;
+
+    }
+
+
+    return Boolean(
+        tetrisCurrentPiece.shape[pieceY][pieceX]
+    );
+
+}
+
+
+// =========================
+// KOLLISION
+// =========================
+
+function checkTetrisCollision(
+    newX,
+    newY,
+    shape
+) {
+
+    for (
+        let y = 0;
+        y < shape.length;
+        y++
+    ) {
+
+        for (
+            let x = 0;
+            x < shape[y].length;
+            x++
+        ) {
+
+            if (!shape[y][x]) {
+                continue;
+            }
+
+
+            const boardX =
+                newX + x;
+
+            const boardY =
+                newY + y;
+
+
+            if (
+                boardX < 0 ||
+                boardX >= TETRIS_WIDTH ||
+                boardY >= TETRIS_HEIGHT
+            ) {
+
+                return true;
+
+            }
+
+
+            if (
+                boardY >= 0 &&
+                tetrisBoardData[boardY][boardX]
+            ) {
+
+                return true;
+
+            }
+
+        }
+
+    }
+
+
+    return false;
+
+}
+
+
+// =========================
+// BLOCK BEWEGEN
+// =========================
+
+function moveTetris(
+    direction
+) {
+
+    if (tetrisGameOver) {
+        return;
+    }
+
+
+    const newX =
+        tetrisCurrentX +
+        direction;
+
+
+    if (
+        !checkTetrisCollision(
+            newX,
+            tetrisCurrentY,
+            tetrisCurrentPiece.shape
+        )
+    ) {
+
+        tetrisCurrentX =
+            newX;
+
+        drawTetrisBoard();
+
+    }
+
+}
+
+
+// =========================
+// BLOCK NACH UNTEN
+// =========================
+
+function dropTetris() {
+
+    if (tetrisGameOver) {
+        return;
+    }
+
+
+    const newY =
+        tetrisCurrentY + 1;
+
+
+    if (
+        !checkTetrisCollision(
+            tetrisCurrentX,
+            newY,
+            tetrisCurrentPiece.shape
+        )
+    ) {
+
+        tetrisCurrentY =
+            newY;
+
+    } else {
+
+        lockTetrisPiece();
+
+    }
+
+
+    drawTetrisBoard();
+
+}
+
+
+// =========================
+// BLOCK FESTSETZEN
+// =========================
+
+function lockTetrisPiece() {
+
+    const shape =
+        tetrisCurrentPiece.shape;
+
+
+    for (
+        let y = 0;
+        y < shape.length;
+        y++
+    ) {
+
+        for (
+            let x = 0;
+            x < shape[y].length;
+            x++
+        ) {
+
+            if (!shape[y][x]) {
+                continue;
+            }
+
+
+            const boardX =
+                tetrisCurrentX + x;
+
+            const boardY =
+                tetrisCurrentY + y;
+
+
+            if (
+                boardY >= 0 &&
+                boardY < TETRIS_HEIGHT
+            ) {
+
+                tetrisBoardData[boardY][boardX] =
+                    tetrisCurrentPiece.color;
+
+            }
+
+        }
+
+    }
+
+
+    clearTetrisLines();
+
+    createTetrisPiece();
+
+}
+
+
+// =========================
+// REIHEN LÖSCHEN
+// =========================
+
+function clearTetrisLines() {
+
+    let linesCleared = 0;
+
+
+    for (
+        let y = TETRIS_HEIGHT - 1;
+        y >= 0;
+        y--
+    ) {
+
+        const full =
+            tetrisBoardData[y].every(
+                cell => cell !== null
+            );
+
+
+        if (full) {
+
+            tetrisBoardData.splice(
+                y,
+                1
+            );
+
+
+            tetrisBoardData.unshift(
+                new Array(
+                    TETRIS_WIDTH
+                ).fill(null)
+            );
+
+
+            linesCleared++;
+
+            y++;
+
+        }
+
+    }
+
+
+    if (linesCleared > 0) {
+
+        const points =
+            [0, 100, 300, 500, 800];
+
+        tetrisScore +=
+            points[linesCleared] || 800;
+
+
+        tetrisScoreElement.textContent =
+            tetrisScore;
+
+
+        tetrisLevel =
+            Math.floor(
+                tetrisScore / 1000
+            ) + 1;
+
+
+        tetrisLevelElement.textContent =
+            tetrisLevel;
+
+
+        startTetrisTimer();
+
+    }
+
+}
+
+
+// =========================
+// BLOCK DREHEN
+// =========================
+
+function rotateTetrisPiece() {
+
+    if (tetrisGameOver) {
+        return;
+    }
+
+
+    const oldShape =
+        tetrisCurrentPiece.shape;
+
+
+    const height =
+        oldShape.length;
+
+    const width =
+        oldShape[0].length;
+
+
+    const newShape = [];
+
+
+    for (
+        let x = 0;
+        x < width;
+        x++
+    ) {
+
+        newShape[x] = [];
+
+        for (
+            let y = height - 1;
+            y >= 0;
+            y--
+        ) {
+
+            newShape[x].push(
+                oldShape[y][x]
+            );
+
+        }
+
+    }
+
+
+    if (
+        !checkTetrisCollision(
+            tetrisCurrentX,
+            tetrisCurrentY,
+            newShape
+        )
+    ) {
+
+        tetrisCurrentPiece.shape =
+            newShape;
+
+        drawTetrisBoard();
+
+    }
+
+}
+
+
+// =========================
+// HARD DROP
+// =========================
+
+function hardDropTetris() {
+
+    if (tetrisGameOver) {
+        return;
+    }
+
+
+    while (
+        !checkTetrisCollision(
+            tetrisCurrentX,
+            tetrisCurrentY + 1,
+            tetrisCurrentPiece.shape
+        )
+    ) {
+
+        tetrisCurrentY++;
+
+    }
+
+
+    lockTetrisPiece();
+
+    drawTetrisBoard();
+
+}
+
+
+// =========================
+// TIMER
+// =========================
+
+function startTetrisTimer() {
+
+    clearInterval(tetrisTimer);
+
+
+    const speed =
+        Math.max(
+            100,
+            800 -
+            ((tetrisLevel - 1) * 70)
+        );
+
+
+    tetrisTimer =
+        setInterval(
+            function() {
+
+                dropTetris();
+
+            },
+            speed
+        );
+
+}
+
+
+function stopTetris() {
+
+    clearInterval(tetrisTimer);
+
+    tetrisTimer = null;
+
+}
+
+
+// =========================
+// BUTTONS
+// =========================
+
+tetrisLeftButton.addEventListener(
+    "click",
+    function() {
+
+        moveTetris(-1);
+
+    }
+);
+
+
+tetrisRightButton.addEventListener(
+    "click",
+    function() {
+
+        moveTetris(1);
+
+    }
+);
+
+
+tetrisRotateButton.addEventListener(
+    "click",
+    function() {
+
+        rotateTetrisPiece();
+
+    }
+);
+
+
+tetrisDownButton.addEventListener(
+    "click",
+    function() {
+
+        dropTetris();
+
+    }
+);
+
+
+tetrisRestartButton.addEventListener(
+    "click",
+    function() {
+
+        startTetris();
+
+    }
+);
+
+
+// =========================
+// TASTATUR
+// =========================
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            tetrisGame.style.display !==
+            "block"
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            event.key === "ArrowLeft"
+        ) {
+
+            event.preventDefault();
+
+            moveTetris(-1);
+
+        }
+
+
+        if (
+            event.key === "ArrowRight"
+        ) {
+
+            event.preventDefault();
+
+            moveTetris(1);
+
+        }
+
+
+        if (
+            event.key === "ArrowDown"
+        ) {
+
+            event.preventDefault();
+
+            dropTetris();
+
+        }
+
+
+        if (
+            event.key === "ArrowUp"
+        ) {
+
+            event.preventDefault();
+
+            rotateTetrisPiece();
+
+        }
+
+
+        if (
+            event.code === "Space"
+        ) {
+
+            event.preventDefault();
+
+            hardDropTetris();
+
+        }
+
+    }
+);

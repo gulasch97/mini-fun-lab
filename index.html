@@ -89,6 +89,25 @@
                     </button>
                 </div>
 
+
+                <!-- =========================
+                     TETRIS KARTE
+                     ========================= -->
+
+                <div class="game-card">
+                    <div class="game-icon">🧱</div>
+
+                    <h2>Tetris</h2>
+
+                    <p>
+                        Wie viele Reihen kannst du löschen?
+                    </p>
+
+                    <button id="tetrisGameButton">
+                        Spielen
+                    </button>
+                </div>
+
             </div>
 
         </div>
@@ -368,8 +387,113 @@
 
         </div>
 
+
+        <!-- =========================
+             TETRIS
+             ========================= -->
+
+        <div id="tetrisGame" class="game-screen">
+
+            <div class="game-header">
+
+                <button
+                    id="tetrisBackButton"
+                    class="back-button"
+                >
+                    ← Zurück
+                </button>
+
+            </div>
+
+
+            <div class="tetris-container">
+
+                <div class="big-icon">
+                    🧱
+                </div>
+
+                <h1>Tetris</h1>
+
+                <p class="game-description">
+                    Staple die Blöcke und lösche Reihen!
+                </p>
+
+
+                <!-- SCORE -->
+
+                <div class="tetris-info">
+
+                    <span>
+                        Score:
+                        <strong id="tetris-score">
+                            0
+                        </strong>
+                    </span>
+
+                    <span>
+                        Level:
+                        <strong id="tetris-level">
+                            1
+                        </strong>
+                    </span>
+
+                </div>
+
+
+                <!-- SPIELFELD -->
+
+                <div id="tetris-board">
+                </div>
+
+
+                <!-- STEUERUNG -->
+
+                <div class="tetris-controls">
+
+                    <button id="tetris-left">
+                        ⬅️
+                    </button>
+
+                    <button id="tetris-rotate">
+                        🔄
+                    </button>
+
+                    <button id="tetris-right">
+                        ➡️
+                    </button>
+
+                    <button id="tetris-down">
+                        ⬇️
+                    </button>
+
+                </div>
+
+
+                <!-- NEUSTART -->
+
+                <button
+                    id="tetris-restart"
+                    class="main-button"
+                >
+                    🔄 Neustart
+                </button>
+
+
+                <p class="tetris-help">
+                    ← → bewegen · ↑ drehen · ↓ schneller ·
+                    Leertaste = Drop
+                </p>
+
+            </div>
+
+        </div>
+
     </div>
 
+
+    <!-- =========================
+         JAVASCRIPT
+         ========================= -->
 
     <script src="script.js"></script>
 
