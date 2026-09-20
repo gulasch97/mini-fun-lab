@@ -1518,8 +1518,8 @@ const tetrisScoreElement =
 const tetrisLevelElement =
     document.getElementById("tetris-level");
 
-const tetrisRestartButton =
-    document.getElementById("tetris-restart");
+const tetrisHardDropButton =
+    document.getElementById("tetris-hard-drop");
 
 const tetrisLeftButton =
     document.getElementById("tetris-left");
@@ -1533,6 +1533,12 @@ const tetrisRotateButton =
 const tetrisDownButton =
     document.getElementById("tetris-down");
 
+const tetrisNextBoard =
+    document.getElementById("tetris-next-board");
+
+const tetrisStartOverlay =
+    document.getElementById("tetris-start-overlay");
+
 
 // =========================
 // TETRIS EINSTELLUNGEN
@@ -1545,6 +1551,8 @@ let tetrisBoardData = [];
 
 let tetrisCurrentPiece = null;
 
+let tetrisNextPiece = null;
+
 let tetrisCurrentX = 0;
 let tetrisCurrentY = 0;
 
@@ -1552,6 +1560,8 @@ let tetrisScore = 0;
 let tetrisLevel = 1;
 
 let tetrisGameOver = false;
+
+let tetrisStarted = false;
 
 let tetrisTimer = null;
 
@@ -1632,6 +1642,20 @@ tetrisGameButton.addEventListener(
 
         tetrisGame.style.display = "block";
 
+        showTetrisStartScreen();
+
+    }
+);
+
+
+// =========================
+// SPIEL PER KLICK STARTEN
+// =========================
+
+tetrisStartOverlay.addEventListener(
+    "click",
+    function() {
+
         startTetris();
 
     }
@@ -1664,6 +1688,12 @@ function startTetris() {
 
     stopTetris();
 
+    tetrisStartOverlay.classList.add(
+        "hidden"
+    );
+
+    tetrisStarted = true;
+
     tetrisScore = 0;
 
     tetrisLevel = 1;
@@ -1676,6 +1706,67 @@ function startTetris() {
     tetrisLevelElement.textContent =
         tetrisLevel;
 
+
+    resetTetrisBoardData();
+
+
+    tetrisNextPiece =
+        generateRandomTetrisPiece();
+
+    createTetrisPiece();
+
+    drawTetrisBoard();
+
+    startTetrisTimer();
+
+}
+
+
+// =========================
+// STARTBILDSCHIRM ANZEIGEN
+// =========================
+
+function showTetrisStartScreen() {
+
+    stopTetris();
+
+    tetrisStarted = false;
+
+    tetrisGameOver = false;
+
+    tetrisCurrentPiece = null;
+
+    tetrisNextPiece = null;
+
+    tetrisScore = 0;
+
+    tetrisLevel = 1;
+
+    tetrisScoreElement.textContent =
+        tetrisScore;
+
+    tetrisLevelElement.textContent =
+        tetrisLevel;
+
+
+    resetTetrisBoardData();
+
+    drawTetrisBoard();
+
+    tetrisNextBoard.innerHTML = "";
+
+    tetrisStartOverlay.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+// =========================
+// SPIELFELD-DATEN LEEREN
+// =========================
+
+function resetTetrisBoardData() {
 
     tetrisBoardData = [];
 
@@ -1699,13 +1790,6 @@ function startTetris() {
 
     }
 
-
-    createTetrisPiece();
-
-    drawTetrisBoard();
-
-    startTetrisTimer();
-
 }
 
 
@@ -1713,7 +1797,7 @@ function startTetris() {
 // NEUEN BLOCK ERSTELLEN
 // =========================
 
-function createTetrisPiece() {
+function generateRandomTetrisPiece() {
 
     const randomIndex =
         Math.floor(
@@ -1725,7 +1809,7 @@ function createTetrisPiece() {
         tetrisPieces[randomIndex];
 
 
-    tetrisCurrentPiece = {
+    return {
 
         color: original.color,
 
@@ -1734,6 +1818,27 @@ function createTetrisPiece() {
         )
 
     };
+
+}
+
+
+function createTetrisPiece() {
+
+    if (!tetrisNextPiece) {
+
+        tetrisNextPiece =
+            generateRandomTetrisPiece();
+
+    }
+
+
+    tetrisCurrentPiece =
+        tetrisNextPiece;
+
+    tetrisNextPiece =
+        generateRandomTetrisPiece();
+
+    drawTetrisNextPiece();
 
 
     tetrisCurrentX =
@@ -1768,9 +1873,91 @@ function createTetrisPiece() {
                     tetrisScore
                 );
 
+                showTetrisStartScreen();
+
             },
             100
         );
+
+    }
+
+}
+
+
+// =========================
+// VORSCHAU ZEICHNEN
+// =========================
+
+function drawTetrisNextPiece() {
+
+    tetrisNextBoard.innerHTML = "";
+
+
+    const shape =
+        tetrisNextPiece.shape;
+
+    const previewSize = 4;
+
+    const offsetY =
+        Math.floor(
+            (previewSize - shape.length) / 2
+        );
+
+    const offsetX =
+        Math.floor(
+            (previewSize - shape[0].length) / 2
+        );
+
+
+    for (
+        let y = 0;
+        y < previewSize;
+        y++
+    ) {
+
+        for (
+            let x = 0;
+            x < previewSize;
+            x++
+        ) {
+
+            const cell =
+                document.createElement("div");
+
+            cell.className =
+                "tetris-next-cell";
+
+
+            const shapeY =
+                y - offsetY;
+
+            const shapeX =
+                x - offsetX;
+
+
+            if (
+                shapeY >= 0 &&
+                shapeY < shape.length &&
+                shapeX >= 0 &&
+                shapeX < shape[0].length &&
+                shape[shapeY][shapeX]
+            ) {
+
+                cell.classList.add(
+                    "filled"
+                );
+
+                cell.style.background =
+                    tetrisNextPiece.color;
+
+            }
+
+
+            tetrisNextBoard.appendChild(
+                cell
+            );
+
+        }
 
     }
 
@@ -1963,7 +2150,7 @@ function moveTetris(
     direction
 ) {
 
-    if (tetrisGameOver) {
+    if (!tetrisStarted || tetrisGameOver) {
         return;
     }
 
@@ -1997,7 +2184,7 @@ function moveTetris(
 
 function dropTetris() {
 
-    if (tetrisGameOver) {
+    if (!tetrisStarted || tetrisGameOver) {
         return;
     }
 
@@ -2017,14 +2204,13 @@ function dropTetris() {
         tetrisCurrentY =
             newY;
 
+        drawTetrisBoard();
+
     } else {
 
         lockTetrisPiece();
 
     }
-
-
-    drawTetrisBoard();
 
 }
 
@@ -2078,9 +2264,11 @@ function lockTetrisPiece() {
     }
 
 
-    clearTetrisLines();
+    tetrisCurrentPiece = null;
 
-    createTetrisPiece();
+    drawTetrisBoard();
+
+    clearTetrisLines();
 
 }
 
@@ -2089,15 +2277,14 @@ function lockTetrisPiece() {
 // REIHEN LÖSCHEN
 // =========================
 
-function clearTetrisLines() {
+function getFullTetrisRows() {
 
-    let linesCleared = 0;
-
+    const fullRows = [];
 
     for (
-        let y = TETRIS_HEIGHT - 1;
-        y >= 0;
-        y--
+        let y = 0;
+        y < TETRIS_HEIGHT;
+        y++
     ) {
 
         const full =
@@ -2105,14 +2292,78 @@ function clearTetrisLines() {
                 cell => cell !== null
             );
 
-
         if (full) {
+
+            fullRows.push(y);
+
+        }
+
+    }
+
+    return fullRows;
+
+}
+
+
+function highlightTetrisLines(
+    fullRows
+) {
+
+    const cells =
+        tetrisBoard.children;
+
+    fullRows.forEach(
+        function(y) {
+
+            for (
+                let x = 0;
+                x < TETRIS_WIDTH;
+                x++
+            ) {
+
+                const index =
+                    y * TETRIS_WIDTH + x;
+
+                const cell =
+                    cells[index];
+
+                if (cell) {
+
+                    cell.classList.add(
+                        "tetris-line-clear"
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+function removeTetrisLines(
+    fullRows
+) {
+
+    const linesCleared =
+        fullRows.length;
+
+    const sorted =
+        fullRows
+            .slice()
+            .sort(
+                (a, b) => b - a
+            );
+
+    sorted.forEach(
+        function(y) {
 
             tetrisBoardData.splice(
                 y,
                 1
             );
-
 
             tetrisBoardData.unshift(
                 new Array(
@@ -2120,42 +2371,69 @@ function clearTetrisLines() {
                 ).fill(null)
             );
 
-
-            linesCleared++;
-
-            y++;
-
         }
+    );
+
+
+    const points =
+        [0, 100, 300, 500, 800];
+
+    tetrisScore +=
+        points[linesCleared] || 800;
+
+
+    tetrisScoreElement.textContent =
+        tetrisScore;
+
+
+    tetrisLevel =
+        Math.floor(
+            tetrisScore / 1000
+        ) + 1;
+
+
+    tetrisLevelElement.textContent =
+        tetrisLevel;
+
+}
+
+
+function clearTetrisLines() {
+
+    const fullRows =
+        getFullTetrisRows();
+
+
+    if (fullRows.length === 0) {
+
+        createTetrisPiece();
+
+        drawTetrisBoard();
+
+        return;
 
     }
 
 
-    if (linesCleared > 0) {
+    stopTetris();
 
-        const points =
-            [0, 100, 300, 500, 800];
-
-        tetrisScore +=
-            points[linesCleared] || 800;
+    highlightTetrisLines(fullRows);
 
 
-        tetrisScoreElement.textContent =
-            tetrisScore;
+    setTimeout(
+        function() {
 
+            removeTetrisLines(fullRows);
 
-        tetrisLevel =
-            Math.floor(
-                tetrisScore / 1000
-            ) + 1;
+            createTetrisPiece();
 
+            drawTetrisBoard();
 
-        tetrisLevelElement.textContent =
-            tetrisLevel;
+            startTetrisTimer();
 
-
-        startTetrisTimer();
-
-    }
+        },
+        350
+    );
 
 }
 
@@ -2166,7 +2444,7 @@ function clearTetrisLines() {
 
 function rotateTetrisPiece() {
 
-    if (tetrisGameOver) {
+    if (!tetrisStarted || tetrisGameOver) {
         return;
     }
 
@@ -2232,7 +2510,7 @@ function rotateTetrisPiece() {
 
 function hardDropTetris() {
 
-    if (tetrisGameOver) {
+    if (!tetrisStarted || tetrisGameOver) {
         return;
     }
 
@@ -2251,8 +2529,6 @@ function hardDropTetris() {
 
 
     lockTetrisPiece();
-
-    drawTetrisBoard();
 
 }
 
@@ -2340,11 +2616,11 @@ tetrisDownButton.addEventListener(
 );
 
 
-tetrisRestartButton.addEventListener(
+tetrisHardDropButton.addEventListener(
     "click",
     function() {
 
-        startTetris();
+        hardDropTetris();
 
     }
 );
@@ -2368,8 +2644,13 @@ document.addEventListener(
         }
 
 
+        const key =
+            event.key.toLowerCase();
+
+
         if (
-            event.key === "ArrowLeft"
+            key === "arrowleft" ||
+            key === "a"
         ) {
 
             event.preventDefault();
@@ -2380,7 +2661,8 @@ document.addEventListener(
 
 
         if (
-            event.key === "ArrowRight"
+            key === "arrowright" ||
+            key === "d"
         ) {
 
             event.preventDefault();
@@ -2391,7 +2673,8 @@ document.addEventListener(
 
 
         if (
-            event.key === "ArrowDown"
+            key === "arrowdown" ||
+            key === "s"
         ) {
 
             event.preventDefault();
@@ -2402,7 +2685,8 @@ document.addEventListener(
 
 
         if (
-            event.key === "ArrowUp"
+            key === "arrowup" ||
+            key === "w"
         ) {
 
             event.preventDefault();

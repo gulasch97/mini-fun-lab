@@ -1,13 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap');
+
+
+/* Verhindert den schwarzen Tap-Highlight/Kontextmenü-Effekt
+   beim langen Drücken auf Handys (v.a. bei den Bild-Kacheln) */
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.game-card,
+.game-card * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+
 body {
     margin: 0;
 
     font-family: Arial, sans-serif;
 
-    background: #f5f5f5;
+    background: transparent;
 
     color: #222;
 
     transition: background 0.3s;
+}
+
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: #ffffff;
+
+    z-index: -1;
 }
 
 
@@ -30,6 +61,10 @@ h1 {
     font-size: 48px;
 
     margin-bottom: 10px;
+
+    color: #1a1a1a;
+
+    text-shadow: none;
 }
 
 
@@ -41,6 +76,8 @@ h1 {
     color: #666;
 
     margin-bottom: 40px;
+
+    text-shadow: none;
 }
 
 
@@ -48,53 +85,180 @@ h1 {
     display: grid;
 
     grid-template-columns:
-        repeat(2, 1fr);
+        repeat(3, 1fr);
 
-    gap: 20px;
+    gap: 18px;
 }
 
 
 .game-card {
-    background: white;
+    position: relative;
 
-    padding: 30px;
+    background: #FFD166;
+
+    padding: 22px 12px;
 
     border-radius: 20px;
 
     text-align: center;
 
+    overflow: hidden;
+
     box-shadow:
-        0 5px 20px
-        rgba(0, 0, 0, 0.08);
+        0 4px 14px
+        rgba(0, 0, 0, 0.25);
 
     transition:
-        transform 0.2s,
-        box-shadow 0.2s;
+        box-shadow 0.2s ease;
+}
+
+
+/* Tetris-Kachel jetzt gleich groß wie die anderen */
+
+
+@keyframes tileWiggle {
+    0%   { transform: rotate(0deg)  scale(1); }
+    20%  { transform: rotate(-4deg) scale(1.04); }
+    50%  { transform: rotate(3deg)  scale(1.04); }
+    80%  { transform: rotate(-2deg) scale(1.04); }
+    100% { transform: rotate(0deg)  scale(1.04); }
 }
 
 
 .game-card:hover {
-    transform:
-        translateY(-5px);
+    animation: tileWiggle 0.4s ease forwards;
 
     box-shadow:
-        0 10px 30px
-        rgba(0, 0, 0, 0.12);
+        0 10px 24px
+        rgba(0, 0, 0, 0.3);
+}
+
+
+.game-card:active {
+    animation: none;
+
+    transform: scale(0.96);
+}
+
+
+/* Bunte Kartenfarben, wie bei Neal.fun */
+
+.game-card:nth-child(1) {
+    background: #111 url("zufallszahl-hintergrund.jpg") center/cover no-repeat;
+}
+
+.game-card:nth-child(2) {
+    background: #111 url("farben-hintergrund.jpg") center/cover no-repeat;
+}
+
+.game-card:nth-child(3) {
+    background: #1c0f3a url("klick-hintergrund.jpg") center/cover no-repeat;
+}
+
+.game-card:nth-child(4) {
+    background: #f6e9dd url("quiz-hintergrund.jpg") center/cover no-repeat;
+}
+
+.game-card:nth-child(5) {
+    background: #111 url("tetris-hintergrund.jpg") center/cover no-repeat;
+}
+
+/* Bild zeigt "QUIZ" schon selbst, Icon + Titel-Text also ausblenden */
+
+.game-card:nth-child(4) .game-icon,
+.game-card:nth-child(4) h2 {
+    display: none;
+}
+
+.game-card:nth-child(1)::before,
+.game-card:nth-child(2)::before,
+.game-card:nth-child(3)::before,
+.game-card:nth-child(5)::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.game-card:nth-child(1) .game-icon,
+.game-card:nth-child(1) h2,
+.game-card:nth-child(2) .game-icon,
+.game-card:nth-child(2) h2,
+.game-card:nth-child(3) .game-icon,
+.game-card:nth-child(3) h2,
+.game-card:nth-child(5) .game-icon,
+.game-card:nth-child(5) h2 {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 
 .game-icon {
-    font-size: 50px;
+    font-size: 44px;
+
+    display: inline-block;
 }
 
 
 .game-card h2 {
-    margin: 10px 0;
+    margin: 6px 0 0;
+
+    color: #1a1a1a;
+
+    font-family: 'Fredoka', Arial, sans-serif;
+
+    font-size: 17px;
 }
 
 
+/* Beschreibung ausgeblendet, Neal.fun-Kacheln zeigen nur Icon + Name */
+
 .game-card p {
-    color: #666;
+    display: none;
+}
+
+
+/* Der Button füllt die ganze Kachel unsichtbar aus,
+   so ist wie bei Neal.fun die komplette Kachel klickbar */
+
+.game-card button {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 2;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    background: transparent !important;
+
+    border: none;
+
+    outline: none;
+
+    box-shadow: none;
+
+    color: transparent;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+.game-card button:hover,
+.game-card button:focus,
+.game-card button:active {
+    background: transparent !important;
+    box-shadow: none;
+    outline: none;
 }
 
 
@@ -116,6 +280,10 @@ button {
     font-size: 16px;
 
     cursor: pointer;
+
+    touch-action: manipulation;
+
+    -webkit-tap-highlight-color: transparent;
 
     transition:
         transform 0.15s,
@@ -588,6 +756,77 @@ button:disabled {
 
 
 /* =========================
+   SOCIAL BUTTONS
+   ========================= */
+
+.social-bar {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 10;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.social-button {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #fff;
+
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+    touch-action: manipulation;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.social-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+.social-button:active {
+    transform: scale(0.94);
+}
+
+.social-button.tiktok {
+    background: #010101;
+}
+
+.social-button.twitch {
+    background: #9147ff;
+}
+
+.social-button.youtube {
+    background: #ff0000;
+}
+
+@media (max-width: 600px) {
+    .social-bar {
+        left: 14px;
+        bottom: 14px;
+        gap: 8px;
+    }
+
+    .social-button {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+
+/* =========================
    HANDY
    ========================= */
 
@@ -672,7 +911,36 @@ button:disabled {
 
 .tetris-container {
     text-align: center;
-    padding: 20px;
+    padding: 25px 15px 35px;
+    background: #0b0f22;
+    border-radius: 28px;
+    max-width: 400px;
+    margin: 30px auto;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+    color: #e7ebff;
+}
+
+.tetris-container .big-icon {
+    display: none;
+}
+
+.tetris-container h1 {
+    font-family: 'Fredoka', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 46px;
+    letter-spacing: 2px;
+    margin: 0 0 6px;
+    background: linear-gradient(90deg,
+        #ff4d4d 0%, #ff9f43 20%, #ffd93d 40%,
+        #4ade80 60%, #38bdf8 80%, #a855f7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.45));
+}
+
+.tetris-container .game-description {
+    color: #9aa5c9;
 }
 
 .tetris-info {
@@ -681,25 +949,129 @@ button:disabled {
     gap: 30px;
     margin: 15px 0;
     font-size: 18px;
+    color: #e7ebff;
+}
+
+.tetris-next {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.tetris-next-label {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #9aa5c9;
+}
+
+#tetris-next-board {
+    display: grid;
+    grid-template-columns: repeat(4, 20px);
+    grid-template-rows: repeat(4, 20px);
+    gap: 2px;
+    background: #0d1128;
+    border: 2px solid rgba(51, 195, 255, 0.4);
+    border-radius: 10px;
+    padding: 6px;
+}
+
+.tetris-next-cell {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.tetris-next-cell.filled {
+    box-shadow:
+        inset -3px -3px 0 rgba(0, 0, 0, 0.25),
+        inset 3px 3px 0 rgba(255, 255, 255, 0.35);
+}
+
+.tetris-board-wrap {
+    position: relative;
+    width: 300px;
+    margin: 20px auto;
 }
 
 #tetris-board {
     width: 300px;
     height: 600px;
-    margin: 20px auto;
+    margin: 0;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(20, 1fr);
-    background: #111;
-    border: 4px solid #333;
-    border-radius: 8px;
+    background:
+        repeating-linear-gradient(
+            to right,
+            rgba(88, 166, 255, 0.12) 0px,
+            rgba(88, 166, 255, 0.12) 1px,
+            transparent 1px,
+            transparent 30px
+        ),
+        repeating-linear-gradient(
+            to bottom,
+            rgba(88, 166, 255, 0.12) 0px,
+            rgba(88, 166, 255, 0.12) 1px,
+            transparent 1px,
+            transparent 30px
+        ),
+        #0d1128;
+    border: 3px solid #33c3ff;
+    border-radius: 20px;
     overflow: hidden;
+    box-shadow:
+        0 0 0 4px rgba(51, 195, 255, 0.15),
+        0 0 25px rgba(51, 195, 255, 0.35),
+        inset 0 0 25px rgba(0, 0, 0, 0.5);
+}
+
+#tetris-start-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: rgba(10, 13, 32, 0.6);
+    border-radius: 20px;
+    cursor: pointer;
+    color: #fff;
+    text-align: center;
+    font-family: 'Fredoka', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.4;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.15s ease;
+}
+
+#tetris-start-overlay:hover {
+    background: rgba(10, 13, 32, 0.45);
+}
+
+#tetris-start-overlay svg {
+    opacity: 0.9;
+}
+
+#tetris-start-overlay.hidden {
+    display: none;
 }
 
 .tetris-cell {
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: #181818;
     box-sizing: border-box;
+    border-radius: 3px;
+}
+
+.tetris-cell[style*="background"] {
+    border: none;
+    box-shadow:
+        inset -4px -4px 0 rgba(0, 0, 0, 0.25),
+        inset 4px 4px 0 rgba(255, 255, 255, 0.35);
 }
 
 .tetris-controls {
@@ -711,22 +1083,102 @@ button:disabled {
 }
 
 .tetris-controls button {
-    width: 55px;
-    height: 50px;
-    border: none;
-    border-radius: 12px;
-    background: #333;
-    color: white;
-    font-size: 22px;
+    width: 62px;
+    height: 58px;
+    border: 1px solid rgba(88, 166, 255, 0.35);
+    border-radius: 14px;
+    background: linear-gradient(145deg, #2a3363, #171b34);
+    color: #dce6ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    box-shadow:
+        0 4px 0 #0a0d1f,
+        0 6px 14px rgba(51, 195, 255, 0.25);
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .tetris-controls button:hover {
-    background: #555;
+    background: linear-gradient(145deg, #37427a, #1f2547);
+    box-shadow:
+        0 4px 0 #0a0d1f,
+        0 8px 18px rgba(51, 195, 255, 0.4);
 }
 
 .tetris-controls button:active {
-    transform: scale(0.92);
+    transform: translateY(3px);
+    box-shadow:
+        0 1px 0 #0a0d1f,
+        0 3px 8px rgba(51, 195, 255, 0.3);
+}
+
+.tetris-controls #tetris-rotate {
+    background: linear-gradient(145deg, #b968ff, #7c3aed);
+    border-color: rgba(216, 180, 254, 0.5);
+    color: #fff;
+    box-shadow:
+        0 4px 0 #4c1d95,
+        0 6px 14px rgba(168, 85, 247, 0.45);
+}
+
+.tetris-controls #tetris-rotate:hover {
+    background: linear-gradient(145deg, #c98bff, #8b45f0);
+    box-shadow:
+        0 4px 0 #4c1d95,
+        0 8px 18px rgba(168, 85, 247, 0.55);
+}
+
+.tetris-controls #tetris-rotate:active {
+    transform: translateY(3px);
+    box-shadow:
+        0 1px 0 #4c1d95,
+        0 3px 8px rgba(168, 85, 247, 0.4);
+}
+
+#tetris-hard-drop.main-button {
+    margin-top: 8px;
+    background: linear-gradient(135deg, #38bdf8, #a855f7);
+    box-shadow: 0 6px 18px rgba(56, 189, 248, 0.4);
+}
+
+#tetris-hard-drop.main-button:hover {
+    background: linear-gradient(135deg, #60cdff, #b968ff);
+}
+
+
+/* =========================
+   REIHE LÖSCHEN – EFFEKT
+   ========================= */
+
+@keyframes tetrisLineClear {
+
+    0% {
+        filter: brightness(1);
+        box-shadow: none;
+        opacity: 1;
+    }
+
+    35% {
+        filter: brightness(2.4);
+        box-shadow: 0 0 18px 6px rgba(255, 255, 255, 0.9);
+        opacity: 1;
+    }
+
+    100% {
+        filter: brightness(2.6);
+        box-shadow: 0 0 22px 8px rgba(255, 255, 255, 0.9);
+        transform: scaleY(0.05);
+        opacity: 0;
+    }
+
+}
+
+.tetris-cell.tetris-line-clear {
+    animation: tetrisLineClear 0.35s ease forwards;
+    z-index: 2;
 }
 
 .tetris-help {
@@ -735,7 +1187,7 @@ button:disabled {
     margin-top: 15px;
 }
 
-#tetris-restart {
+#tetris-hard-drop {
     margin-top: 5px;
 }
 
@@ -743,6 +1195,19 @@ button:disabled {
 /* Handy */
 
 @media (max-width: 500px) {
+
+    .tetris-container {
+        max-width: calc(100% - 20px);
+        padding: 20px 10px 28px;
+    }
+
+    .tetris-container h1 {
+        font-size: 36px;
+    }
+
+    .tetris-board-wrap {
+        width: 250px;
+    }
 
     #tetris-board {
         width: 250px;

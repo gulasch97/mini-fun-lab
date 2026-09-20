@@ -22,7 +22,7 @@
 
         <div id="home">
 
-            <h1>🎉 Mini Fun Lab 🎉</h1>
+            <h1> Mini Fun Lab </h1>
 
             <p class="description">
                 Follow gulasch97 on TikTok🙏✌️
@@ -440,9 +440,41 @@
                 </div>
 
 
+                <!-- NÄCHSTER BLOCK -->
+
+                <div class="tetris-next">
+
+                    <span class="tetris-next-label">
+                        Nächster Block
+                    </span>
+
+                    <div id="tetris-next-board">
+                    </div>
+
+                </div>
+
+
                 <!-- SPIELFELD -->
 
-                <div id="tetris-board">
+                <div class="tetris-board-wrap">
+
+                    <div id="tetris-board">
+                    </div>
+
+                    <div id="tetris-start-overlay">
+
+                        <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 3v3M13.5 4l-1 3M17.5 6.5l-2 2M4 13h3M4 9l3 1" />
+                            <path d="M11 8l7 3-3 1.3L13.5 15z" />
+                        </svg>
+
+                        <p>
+                            Klicke hier,<br>
+                            um zu starten!
+                        </p>
+
+                    </div>
+
                 </div>
 
 
@@ -450,43 +482,86 @@
 
                 <div class="tetris-controls">
 
-                    <button id="tetris-left">
-                        ⬅️
+                    <button id="tetris-left" aria-label="Links">
+                        <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 6l-6 6 6 6" />
+                        </svg>
                     </button>
 
-                    <button id="tetris-rotate">
-                        🔄
+                    <button id="tetris-rotate" aria-label="Drehen">
+                        <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 12a8 8 0 1 1 2.6 5.9" />
+                            <path d="M4 17v-5h5" />
+                        </svg>
                     </button>
 
-                    <button id="tetris-right">
-                        ➡️
+                    <button id="tetris-right" aria-label="Rechts">
+                        <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 6l6 6-6 6" />
+                        </svg>
                     </button>
 
-                    <button id="tetris-down">
-                        ⬇️
+                    <button id="tetris-down" aria-label="Runter">
+                        <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
                     </button>
 
                 </div>
 
 
-                <!-- NEUSTART -->
+                <!-- DROP -->
 
                 <button
-                    id="tetris-restart"
+                    id="tetris-hard-drop"
                     class="main-button"
                 >
-                    🔄 Neustart
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -4px; margin-right: 4px;">
+                        <path d="M12 4v11" />
+                        <path d="M7 11l5 5 5-5" />
+                        <path d="M6 20h12" />
+                    </svg>
+                    Drop
                 </button>
 
 
                 <p class="tetris-help">
-                    ← → bewegen · ↑ drehen · ↓ schneller ·
-                    Leertaste = Drop
+                    ← → / A D bewegen · ↑ / W drehen ·
+                    ↓ / S schneller · Leertaste = Drop
                 </p>
 
             </div>
 
         </div>
+
+    </div>
+
+
+    <!-- =========================
+         SOCIAL BUTTONS
+         ========================= -->
+
+    <div class="social-bar">
+
+        <a href="https://www.tiktok.com/@gulasch97" target="_blank" rel="noopener" class="social-button tiktok" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                <path d="M16.6 5.82c-1.02-.88-1.63-2.14-1.63-3.52h-3.03v13.02c0 1.48-1.2 2.68-2.68 2.68a2.68 2.68 0 0 1-2.68-2.68 2.68 2.68 0 0 1 2.68-2.68c.28 0 .54.04.8.12v-3.08a5.7 5.7 0 0 0-.8-.06A5.71 5.71 0 0 0 3.55 15.32 5.71 5.71 0 0 0 9.26 21a5.71 5.71 0 0 0 5.71-5.71V9.07a8.7 8.7 0 0 0 5.08 1.63V7.67c-1.24 0-2.4-.4-3.35-1.08a5.73 5.73 0 0 1-.1-.77z"/>
+            </svg>
+        </a>
+
+        <a href="https://www.twitch.tv/gulasch97_" target="_blank" rel="noopener" class="social-button twitch" aria-label="Twitch">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                <path d="M4 2 2 6.5V19h5.5V22l3-3h3.5L20 13V2H4Zm14.5 10-3 3h-3.5l-3 3v-3H4.5V4h14v8Z"/>
+                <rect x="13.5" y="6.5" width="1.7" height="5"/>
+                <rect x="9" y="6.5" width="1.7" height="5"/>
+            </svg>
+        </a>
+
+        <a href="https://www.youtube.com/@gulasch97" target="_blank" rel="noopener" class="social-button youtube" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                <path d="M23 12c0-1.6-.15-3.2-.46-4.7a3 3 0 0 0-2.1-2.1C18.7 4.5 12 4.5 12 4.5s-6.7 0-8.44.7a3 3 0 0 0-2.1 2.1C1.15 8.8 1 10.4 1 12s.15 3.2.46 4.7a3 3 0 0 0 2.1 2.1C5.3 19.5 12 19.5 12 19.5s6.7 0 8.44-.7a3 3 0 0 0 2.1-2.1c.31-1.5.46-3.1.46-4.7Zm-13.25 3.5v-7l6 3.5-6 3.5Z"/>
+            </svg>
+        </a>
 
     </div>
 
