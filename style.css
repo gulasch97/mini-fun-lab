@@ -1219,3 +1219,355 @@ button:disabled {
     }
 
 }
+
+/* =========================
+   UNO
+   ========================= */
+
+.uno-container {
+    text-align: center;
+    padding: 25px 15px 35px;
+    background: #0b0f22;
+    border-radius: 28px;
+    max-width: 420px;
+    margin: 30px auto;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+    color: #e7ebff;
+}
+
+.uno-container h1 {
+    font-family: 'Fredoka', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 40px;
+    margin: 0 0 6px;
+    background: linear-gradient(90deg, #e6423a, #f4c418, #3aa655, #2a7de1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.45));
+}
+
+.uno-container .game-description {
+    color: #9aa5c9;
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* Lobby */
+
+.uno-lobby {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+}
+
+.uno-input {
+    width: 100%;
+    max-width: 260px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(88, 166, 255, 0.35);
+    background: #171b34;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.uno-input::placeholder {
+    color: #6b7699;
+}
+
+.uno-lobby-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+    align-items: center;
+}
+
+.uno-lobby-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+}
+
+.uno-code-input {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.uno-error {
+    color: #ff8a8a;
+    font-size: 14px;
+    min-height: 18px;
+    margin: 4px 0 0;
+}
+
+
+/* Warteraum */
+
+.uno-waiting {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.uno-room-code {
+    font-family: 'Fredoka', Arial, sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: 8px;
+    background: #171b34;
+    border: 2px dashed rgba(88, 166, 255, 0.5);
+    border-radius: 16px;
+    padding: 14px 24px;
+}
+
+.uno-waiting-text {
+    color: #9aa5c9;
+    font-size: 15px;
+    max-width: 280px;
+}
+
+
+/* Spielbereich */
+
+.uno-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.uno-opponent {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 15px;
+    color: #cfd6ff;
+    padding: 0 4px;
+}
+
+.uno-card-count {
+    color: #9aa5c9;
+}
+
+.uno-middle {
+    display: flex;
+    gap: 30px;
+    align-items: flex-end;
+}
+
+.uno-pile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.uno-pile-label {
+    font-size: 12px;
+    color: #9aa5c9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.uno-card {
+    width: 64px;
+    height: 92px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fredoka', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    color: #fff;
+    box-shadow:
+        inset -4px -4px 0 rgba(0, 0, 0, 0.2),
+        inset 4px 4px 0 rgba(255, 255, 255, 0.25),
+        0 6px 14px rgba(0, 0, 0, 0.35);
+    border: 3px solid rgba(255, 255, 255, 0.8);
+}
+
+.uno-card-back {
+    background: #171b34 !important;
+    font-size: 15px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.uno-card-back:hover {
+    transform: translateY(-3px);
+}
+
+.uno-card-back.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.uno-turn-indicator {
+    font-weight: 700;
+    font-size: 16px;
+    color: #9aa5c9;
+}
+
+.uno-turn-indicator.my-turn {
+    color: #4ade80;
+}
+
+.uno-hand {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    max-width: 100%;
+}
+
+.uno-hand-card {
+    width: 52px;
+    height: 76px;
+    font-size: 20px;
+    cursor: not-allowed;
+    opacity: 0.45;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.uno-hand-card.playable {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.uno-hand-card.playable:hover {
+    transform: translateY(-6px);
+}
+
+.uno-call-button {
+    background: linear-gradient(135deg, #ff4d4d, #f4c418);
+    box-shadow: 0 6px 18px rgba(244, 196, 24, 0.4);
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.uno-call-flash {
+    animation: unoCallFlash 0.6s ease;
+}
+
+@keyframes unoCallFlash {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+
+/* Farbwahl */
+
+.uno-color-picker {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 7, 20, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.uno-color-picker-inner {
+    background: #0b0f22;
+    border-radius: 20px;
+    padding: 24px 28px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.uno-color-options {
+    display: grid;
+    grid-template-columns: repeat(2, 60px);
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.uno-color-option {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.12s ease;
+}
+
+.uno-color-option:hover {
+    transform: scale(1.08);
+}
+
+.uno-color-red { background: #e6423a; }
+.uno-color-yellow { background: #f4c418; }
+.uno-color-green { background: #3aa655; }
+.uno-color-blue { background: #2a7de1; }
+
+
+/* Ergebnis */
+
+.uno-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+}
+
+#unoResultText {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+
+/* Handy */
+
+@media (max-width: 500px) {
+
+    .uno-container {
+        max-width: calc(100% - 20px);
+        padding: 20px 10px 28px;
+    }
+
+    .uno-container h1 {
+        font-size: 32px;
+    }
+
+    .uno-card {
+        width: 54px;
+        height: 78px;
+        font-size: 22px;
+    }
+
+    .uno-hand-card {
+        width: 46px;
+        height: 66px;
+        font-size: 17px;
+    }
+
+    .uno-room-code {
+        font-size: 32px;
+        letter-spacing: 5px;
+        padding: 12px 18px;
+    }
+
+}

@@ -108,6 +108,25 @@
                     </button>
                 </div>
 
+
+                <!-- =========================
+                     UNO KARTE
+                     ========================= -->
+
+                <div class="game-card">
+                    <div class="game-icon">🃏</div>
+
+                    <h2>Uno</h2>
+
+                    <p>
+                        Spiel Uno online gegen einen Freund.
+                    </p>
+
+                    <button id="unoGameButton">
+                        Spielen
+                    </button>
+                </div>
+
             </div>
 
         </div>
@@ -534,7 +553,230 @@
 
         </div>
 
+
+        <!-- =========================
+             UNO
+             ========================= -->
+
+        <div id="unoGame" class="game-screen">
+
+            <div class="game-header">
+
+                <button
+                    id="unoBackButton"
+                    class="back-button"
+                >
+                    ← Zurück
+                </button>
+
+            </div>
+
+
+            <div class="uno-container">
+
+                <h1>Uno</h1>
+
+                <p class="game-description">
+                    Spiel Uno online gegen einen Freund.
+                </p>
+
+
+                <!-- =========================
+                     LOBBY (Raum erstellen/beitreten)
+                     ========================= -->
+
+                <div id="unoLobby" class="uno-lobby">
+
+                    <input
+                        id="unoNameInput"
+                        type="text"
+                        maxlength="16"
+                        placeholder="Dein Name"
+                        class="uno-input"
+                    >
+
+                    <div class="uno-lobby-actions">
+
+                        <div class="uno-lobby-box">
+
+                            <button
+                                id="unoCreateButton"
+                                class="main-button"
+                            >
+                                🎲 Raum erstellen
+                            </button>
+
+                        </div>
+
+                        <div class="uno-lobby-box">
+
+                            <input
+                                id="unoJoinCodeInput"
+                                type="text"
+                                maxlength="5"
+                                placeholder="Raum-Code"
+                                class="uno-input uno-code-input"
+                            >
+
+                            <button
+                                id="unoJoinButton"
+                                class="main-button"
+                            >
+                                🔗 Beitreten
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <p id="unoLobbyError" class="uno-error"></p>
+
+                </div>
+
+
+                <!-- =========================
+                     WARTERAUM
+                     ========================= -->
+
+                <div id="unoWaiting" class="uno-waiting hidden">
+
+                    <p>Dein Raum-Code:</p>
+
+                    <div id="unoRoomCodeDisplay" class="uno-room-code">
+                        ----
+                    </div>
+
+                    <button id="unoCopyCodeButton" class="back-button">
+                        📋 Code kopieren
+                    </button>
+
+                    <p class="uno-waiting-text">
+                        Schick den Code an deinen Freund.
+                        Warte, bis er beitritt …
+                    </p>
+
+                </div>
+
+
+                <!-- =========================
+                     SPIELBEREICH
+                     ========================= -->
+
+                <div id="unoBoard" class="uno-board hidden">
+
+                    <div class="uno-opponent">
+
+                        <span id="unoOpponentName">Gegner</span>
+
+                        <span id="unoOpponentCardCount" class="uno-card-count">
+                            7 Karten
+                        </span>
+
+                    </div>
+
+
+                    <div class="uno-middle">
+
+                        <div class="uno-pile">
+
+                            <div
+                                id="unoDrawPile"
+                                class="uno-card uno-card-back"
+                            >
+                                UNO
+                            </div>
+
+                            <span class="uno-pile-label">Ziehen</span>
+
+                        </div>
+
+                        <div class="uno-pile">
+
+                            <div id="unoDiscardTop" class="uno-card">
+                            </div>
+
+                            <span class="uno-pile-label">Ablage</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <p id="unoTurnIndicator" class="uno-turn-indicator">
+                        Du bist dran!
+                    </p>
+
+
+                    <div id="unoHand" class="uno-hand">
+                    </div>
+
+
+                    <button id="unoCallButton" class="main-button uno-call-button">
+                        UNO!
+                    </button>
+
+                </div>
+
+
+                <!-- =========================
+                     FARBWAHL (Wild-Karte)
+                     ========================= -->
+
+                <div id="unoColorPicker" class="uno-color-picker hidden">
+
+                    <div class="uno-color-picker-inner">
+
+                        <p>Welche Farbe?</p>
+
+                        <div class="uno-color-options">
+
+                            <button class="uno-color-option uno-color-red" data-color="red"></button>
+                            <button class="uno-color-option uno-color-yellow" data-color="yellow"></button>
+                            <button class="uno-color-option uno-color-green" data-color="green"></button>
+                            <button class="uno-color-option uno-color-blue" data-color="blue"></button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     SPIELENDE
+                     ========================= -->
+
+                <div id="unoResult" class="uno-result hidden">
+
+                    <p id="unoResultText">🏆 Du hast gewonnen!</p>
+
+                    <button id="unoRestartButton" class="main-button">
+                        🔄 Neues Spiel
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
+
+
+    <!-- =========================
+         JAVASCRIPT
+         ========================= -->
+
+    <script src="script.js"></script>
+
+
+    <!-- =========================
+         FIREBASE (für Uno Online-Multiplayer)
+         ========================= -->
+
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
+    <script src="uno.js"></script>
 
 
     <!-- =========================
@@ -565,12 +807,6 @@
 
     </div>
 
-
-    <!-- =========================
-         JAVASCRIPT
-         ========================= -->
-
-    <script src="script.js"></script>
 
 </body>
 
