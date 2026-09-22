@@ -58,6 +58,9 @@ const unoGameButton =
 const unoBackButton =
     document.getElementById("unoBackButton");
 
+const unoLeaveButton =
+    document.getElementById("unoLeaveButton");
+
 const unoLobby =
     document.getElementById("unoLobby");
 
@@ -93,21 +96,6 @@ const unoOpponentName =
 
 const unoOpponentCardCount =
     document.getElementById("unoOpponentCardCount");
-
-const unoOpponentMiniHand =
-    document.getElementById("unoOpponentMiniHand");
-
-const unoMyCardCount =
-    document.getElementById("unoMyCardCount");
-
-const unoOpponentBox =
-    document.querySelector(".uno-opponent-box");
-
-const unoMeBox =
-    document.querySelector(".uno-me-box");
-
-const unoLeaveButton =
-    document.getElementById("unoLeaveButton");
 
 const unoDrawPile =
     document.getElementById("unoDrawPile");
@@ -350,6 +338,11 @@ function showUnoView(view) {
 
     unoColorPicker.classList.add(
         "hidden"
+    );
+
+    unoLeaveButton.classList.toggle(
+        "hidden",
+        view === "lobby"
     );
 
 }
@@ -644,6 +637,39 @@ function detachUnoListener() {
     unoHostInitLock = false;
 
 }
+
+
+// =========================
+// RAUM VERLASSEN
+// =========================
+
+unoLeaveButton.addEventListener(
+    "click",
+    function() {
+
+        const roomCode =
+            unoSession ? unoSession.code : null;
+
+        detachUnoListener();
+
+        if (unoFirebaseReady && roomCode) {
+
+            unoDb.ref("unoRooms/" + roomCode)
+                .remove()
+                .catch(function() {});
+
+        }
+
+        clearUnoSession();
+
+        unoJoinCodeInput.value = "";
+
+        unoLobbyError.textContent = "";
+
+        showUnoView("lobby");
+
+    }
+);
 
 
 function handleUnoRoomUpdate(room) {
