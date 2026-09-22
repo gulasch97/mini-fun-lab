@@ -94,6 +94,21 @@ const unoOpponentName =
 const unoOpponentCardCount =
     document.getElementById("unoOpponentCardCount");
 
+const unoOpponentMiniHand =
+    document.getElementById("unoOpponentMiniHand");
+
+const unoMyCardCount =
+    document.getElementById("unoMyCardCount");
+
+const unoOpponentBox =
+    document.querySelector(".uno-opponent-box");
+
+const unoMeBox =
+    document.querySelector(".uno-me-box");
+
+const unoLeaveButton =
+    document.getElementById("unoLeaveButton");
+
 const unoDrawPile =
     document.getElementById("unoDrawPile");
 
